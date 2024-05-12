@@ -1,9 +1,9 @@
 "use client";
-import Search from "@/app/ui/dashboard/search/search";
+import Search from "@/src/app/ui/dashboard/search/search";
 import styles from "@/app/ui/dashboard/courses/courses.module.css";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import Pagination from "@/app/ui/dashboard/pagination/pagination";
+import Pagination from "@/src/app/ui/dashboard/pagination/pagination";
 
 const CoursesPage = () => {
   const COURSE_API_BASE_URL = "http://localhost:8093/api/course";
