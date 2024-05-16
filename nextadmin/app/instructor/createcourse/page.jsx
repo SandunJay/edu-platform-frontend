@@ -21,7 +21,7 @@ import { UploadDropzone } from "@/lib/utils/uploadthing";
 
 export default function Example() {
   const[courseName, setCourseName] = useState('');
-  const[authorName, setAuthorName] = useState('');
+  //const[authorName, setAuthorName] = useState('');
   const [description, setDescription] = useState('');
   const [coursePrice, setCoursePrice] = useState('');
   const [coverPhotourl, setCoverPhotourl] = useState('');
@@ -33,7 +33,7 @@ export default function Example() {
 
     const data = {
       name: courseName,
-      author: authorName,
+      author: "nachathunidilmini@gmail.com",
       description: description,
       price: coursePrice,
       imageurl: coverPhotourl,
@@ -55,7 +55,7 @@ export default function Example() {
         console.log("Course created successfully");
          // Clear form fields
         setCourseName('');
-        setAuthorName('');
+        //setAuthorName('');
         setDescription('');
         setCoursePrice('');
         setCoverPhotourl('');
@@ -102,7 +102,7 @@ export default function Example() {
               </div>
             </div>
 
-            <div className="sm:col-span-4">
+            {/* <div className="sm:col-span-4">
               <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
                 Author Name
               </label>
@@ -121,7 +121,7 @@ export default function Example() {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
 
 
             <div className="col-span-full">

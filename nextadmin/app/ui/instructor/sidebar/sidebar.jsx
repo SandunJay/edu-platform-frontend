@@ -34,7 +34,7 @@ const menuItems = [
         icon: <MdArticle />,
       },
       {
-        title: "Orders",
+        title: "Enrolled Users",
         path: "/dashboard/orders",
         icon: <MdContentPasteGo />,
       },

@@ -1,33 +1,61 @@
- 
+
 "use client";
 import React, { useState, useEffect } from "react";
- 
+
 import { UploadDropzone,UploadButton } from "@/lib/utils/uploadthing";
 
+export default function UpdateContent({ params }) {
+    console.log(params);
+    const { contentId } = params; 
+    console.log(contentId);
+    const[contentName, setContentName] = useState('');
+    const [description, setDescription] = useState('');
+    const [courseId, setCourseId] = useState('');
+    const [videourl, setVideourl] = useState('');
+    const [pdfurl, setPdfurl] = useState('');
+    const [loading, setLoading] = useState(true);
 
-export default function Example() {
-  const[contentName, setContentName] = useState('');
-  const [description, setDescription] = useState('');
-  const [courseId, setCourseId] = useState('');
-  const [videourl, setVideourl] = useState('');
-  const [pdfurl, setPdfurl] = useState('');
-   
+  
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`http://localhost:8081/api/content/getcontent/${contentId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(response);
+        const content = await response.json();
+        setContentName(content.title);
+        setDescription(content.description);
+        setCourseId(content.courseId);
+        setVideourl(content.videourl);
+        setPdfurl(content.pdfurl);
+      } catch (error) {
+        console.log(error);
+      }
+      setLoading(false);
+    };
+    fetchData();
+  }, [contentId]);
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const data = {
-      title: contentName,
-      description: description,
-      courseId: courseId,
-      videoUrl: videourl,
-      pdfUrl:pdfurl,
-       
+        title: contentName,
+        description: description,
+        courseId: courseId,
+        videoUrl: videourl,
+        pdfUrl:pdfurl,
     };
 
     console.log("Data: ", data);
     try {
-      const response = await fetch("http://localhost:8081/api/content", {
-        method: "POST",
+      const response = await fetch(`http://localhost:8081/api/content/${contentId}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -35,23 +63,28 @@ export default function Example() {
       });
 
       if (response.ok) {
-        console.log("Course created successfully");
-         // Clear form fields
-        setContentName('');
-        setDescription('');
-        setCourseId('');
-        setVideourl('');
-        setPdfurl('');
-     
+        console.log("Course updated successfully");
+          // Clear form fields
+          setContentName('');
+          setDescription('');
+          setCourseId('');
+          setVideourl('');
+          setPdfurl('');
       } else {
-        console.error("Failed to create course");
+        console.error("Failed to update content");
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
+  if (loading) {
+    return <div>Loading...</div>; // Replace this with your preferred loading UI
+  }
 
+  // Rest of the component remains the same...
+  // Replace the form in your original component with this updated form
+   
   return (
     <form onSubmit={handleSubmit}>
       <div className="space-y-12">
@@ -193,4 +226,15 @@ export default function Example() {
       </div>
     </form>
   )
+}
+
+export async function getServerSideProps(context) {
+  const { params } = context;
+  const { contentId } = params; // Destructure courseId from params
+
+  return {
+    props: {
+      contentId,
+    },
+  };
 }
