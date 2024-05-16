@@ -56,21 +56,31 @@ return (
               <th className="px-6 py-3 text-left text-xs font-medium text-black-500 uppercase tracking-wider">
                  Course Name
                </th>
-                
                <th className="px-6 py-3 text-left text-xs font-medium text-black-500 uppercase tracking-wider">
-                Actions
+                 Course Category
                </th>
-            </tr>
+               <th className="px-6 py-3 text-left text-xs font-medium text-black-500 uppercase tracking-wider">
+                 Course Price
+               </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-black-500 uppercase tracking-wider">
+                Actions
+                  </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-black-500 uppercase tracking-wider">
+               
+               </th>
+               </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {course.map((course) => (
-                    <tr key={content.id}>
+                  
+                    <tr key={course.courseId}>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{course.courseId}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{course.name}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{course.category}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{course.price}</td>
                       
                        
                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                   <Link href="/path-to-new-page" passHref>
+                   <Link href={`/instructor/updatecourse/${course.courseId}`} passHref>
                         <button className="text-indigo-600 hover:text-indigo-900 mr-2">
                                Update
                         </button>
@@ -80,7 +90,7 @@ return (
                         </button>
                       </td>
                     </tr>
-                  ))}
+                  
                 </tbody>
                 </table>
             </div>
@@ -102,5 +112,5 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default ViewContent;
+export default ViewCourses;
 
