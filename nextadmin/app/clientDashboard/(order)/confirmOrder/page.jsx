@@ -11,37 +11,24 @@ const CoursesPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(COURSE_API_BASE_URL, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const courses = await response.json();
+        setCourses(courses);
+      } catch (error) {
+        console.log(error);
+      }
+      setLoading(false);
+    };
     fetchData();
   }, []);
-
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(COURSE_API_BASE_URL, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const courses = await response.json();
-      setCourses(courses);
-    } catch (error) {
-      console.log(error);
-    }
-    setLoading(false);
-  };
-
-  const deleteCourse = async (courseId) => {
-    try {
-      await fetch(`${COURSE_API_BASE_URL}/${courseId}`, {
-        method: "DELETE",
-      });
-      fetchData();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles.top}>
@@ -51,9 +38,10 @@ const CoursesPage = () => {
         <thead>
           <tr>
             <td>ID</td>
-            <td>Course Code</td>
+            <td>Course ID</td>
             <td>Author</td>
-            <td>Category</td>
+            <td>Course Name</td>
+            <td>Description</td>
             <td>Price</td>
             <td>ACTION</td>
           </tr>
@@ -61,11 +49,7 @@ const CoursesPage = () => {
         {!loading && courses && (
           <tbody className="bg-white">
             {courses?.map((course) => (
-              <Course
-                course={course}
-                key={course.courseId}
-                deleteCourse={deleteCourse}
-              />
+              <Course course={course} key={course.id} />
             ))}
           </tbody>
         )}
@@ -75,26 +59,21 @@ const CoursesPage = () => {
   );
 };
 
-function Course({ course, deleteCourse }) {
+function Course({ course }) {
   return (
     <tr key={course.id}>
       <td>{course.id}</td>
       <td>{course.courseId}</td>
       <td>{course.author}</td>
-      <td>{course.category}</td>
+      <td>{course.name}</td>
+      <td>{course.description}</td>
       <td>{course.price}</td>
 
       <td>
         <div className={styles.buttons}>
-          <Link href={`/dashboard/courses/${course.id}`}>
-            <button className={`${styles.button} ${styles.view}`}>Edit</button>
+          <Link href={`/clientDashboard/confirmOrder/${course.id}`}>
+            <button className={`${styles.button} ${styles.view}`}>Buy</button>
           </Link>
-          <button
-            className={`${styles.button} ${styles.delete}`}
-            onClick={() => deleteCourse(course.courseId)}
-          >
-            Delete
-          </button>
         </div>
       </td>
     </tr>
